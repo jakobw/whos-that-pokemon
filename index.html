@@ -1,0 +1,40 @@
+<html>
+<head>
+  <title>Pokemon raten</title>
+  <style type="text/css">
+    #poke-image {
+      height: 350px;
+      width: 350px;
+    }
+  </style>
+  <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript">
+    var initCanvas = function () {
+      var img = new Image(),
+          canvas = document.getElementById('poke-image').getContext('2d');
+      img.onload = function () {
+        canvas.drawImage(img, 0, 0);
+        var imageData = canvas.getImageData(0, 0, img.width, img.height);
+
+        for (var i = 0; i < imageData.data.length; i += 4) {
+          console.log(imageData.data[i+3]);
+          if (imageData.data[i+3] > 100) {
+            imageData.data[i] = 10;
+            imageData.data[i+1] = 10;
+            imageData.data[i+2] = 10;
+            imageData.data[i+3] = 255;
+          }
+        }
+        canvas.putImageData(imageData, 0, 0);
+      };
+      img.src = 'images/1.png';
+    };
+    $(function () {
+      initCanvas();
+    });
+  </script>
+</head>
+<body>
+  <canvas id="poke-image" height="350" width="350"></canvas>
+</body>
+</html>
