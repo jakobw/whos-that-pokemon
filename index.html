@@ -20,6 +20,13 @@
     #success {
       margin-top: 20px;
     }
+    #poke-slide {
+      height: 150px;
+      overflow: hidden;
+    }
+    #poke-slide img {
+      height: 150px;
+    }
   </style>
   <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -73,9 +80,14 @@
       $('#missing').text(missing.length)
     };
 
+    var showCorrect = function () {
+      $('#poke-slide').prepend('<img src="images/' + (missing[current] - 1) + '.png" />');
+    };
+
     var checkGuess = function ($input) {
       if ($input.val().toLowerCase() === pokemon[missing[current] - 1]) {
         removeMissing();
+        showCorrect();
         updateCounter();
 
         if (missing.length > 0) {
@@ -129,6 +141,7 @@
       </div>
       <div class="span4"><canvas id="poke-image" height="350" width="350"></canvas></div>
     </div>
+    <div class="row" id="poke-slide"></div>
   </div>
 </body>
 </html>
