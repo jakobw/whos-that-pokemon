@@ -1,26 +1,39 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Pokemon raten</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <style type="text/css">
     #poke-image {
       height: 350px;
       width: 350px;
     }
+    #guess input {
+      margin-bottom: 0;
+    }
+    #time, #missing {
+      font-weight: bold;
+    }
+    .data {
+      font-size: 20px;
+    }
+    #success {
+      margin-top: 20px;
+    }
   </style>
   <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <script type="text/javascript">
     var pokemon = ['bisasam', 'bisaknosp', 'bisaflor', 'glumanda', 'glutexo', 'glurak', 'schiggy', 'schillok', 'turtok', 'raupy', 'safcon', 'smettbo', 'hornliu', 'kokuna', 'bibor', 'taubsi', 'tauboga', 'tauboss', 'rattfratz', 'rattikarl', 'habitak', 'ibitak', 'rettan', 'arbok', 'pikachu', 'raichu', 'sandan', 'sandamer', 'nidoran w', 'nidorina', 'nidoqueen', 'nidoran m', 'nidorino', 'nidoking', 'piepi', 'pixi', 'vulpix', 'vulnona', 'pummeluff', 'knuddeluff', 'zubat', 'golbat', 'myrapla', 'duflor', 'giflor', 'paras', 'parasek', 'bluzuk', 'omot', 'digda', 'digdri', 'mauzi', 'snobilikat', 'enton', 'entoron', 'menki', 'rasaff', 'fukano', 'arkani', 'quapsel', 'quaputzi', 'quappo', 'abra', 'kadabra', 'simsala', 'machollo', 'maschock', 'machomei', 'knofensa', 'ultrigaria', 'sarzenia', 'tentacha', 'tentoxa', 'kleinstein', 'georok', 'geowaz', 'ponita', 'gallopa', 'flegmon', 'lahmus', 'magnetilo', 'magneton', 'porenta', 'dodu', 'dodri', 'jurob', 'jugong', 'sleima', 'sleimok', 'muschas', 'austos', 'nebulak', 'alpollo', 'gengar', 'onix', 'traumato', 'hypno', 'krabby', 'kingler', 'voltobal', 'lektrobal', 'owei', 'kokowei', 'tragosso', 'knogga', 'kicklee', 'nockchan', 'schlurp', 'smogon', 'smogmog', 'rihorn', 'rizeros', 'chaneira', 'tangela', 'kangama', 'seeper', 'seemon', 'goldini', 'golking', 'sterndu', 'starmie', 'pantimos', 'sichlor', 'rossana', 'elektek', 'magmar', 'pinsir', 'tauros', 'karpador', 'garados', 'lapras', 'ditto', 'evoli', 'aquana', 'blitza', 'flamara', 'porygon', 'amonitas', 'amoroso', 'kabuto', 'kabutops', 'aerodactyl', 'relaxo', 'arktos', 'zapdos', 'lavados', 'dratini', 'dragonir', 'dragoran', 'mewtu', 'mew'],
       missing = [],
-      current = '';
+      current = -1,
+      timer = 0;
 
     for (var i = 1; i <= 151; i++) missing.push(i);
 
     var showPkmn = function () {
-      var nr = missing[Math.floor(Math.random() * missing.length)];
-
-      current = pokemon[nr - 1];
-      loadPkmn(nr);
-      // when complete splice nr
+      current = Math.floor(Math.random() * missing.length);
+      loadPkmn(current);
     };
 
     var loadPkmn = function (nr) {
@@ -43,14 +56,41 @@
         }
         canvas.putImageData(imageData, 0, 0);
       };
-      img.src = 'images/' + nr + '.png';
+      img.src = 'images/' + missing[nr] + '.png';
+    };
+
+    var removeMissing = function () {
+      missing.splice(current, 1);
+    };
+
+    var success = function () {
+      clearInterval(1);
+      $('#success').show('fast');
+      $('#final-time').text(timer);
+    }
+
+    var updateCounter = function () {
+      $('#missing').text(missing.length)
     };
 
     var checkGuess = function ($input) {
-      if ($input.val().toLowerCase() === current) {
-        showPkmn();
+      if ($input.val().toLowerCase() === pokemon[missing[current] - 1]) {
+        removeMissing();
+        updateCounter();
+
+        if (missing.length > 0) {
+          showPkmn();
+        } else {
+          success();
+        }
       }
       $input.val('');
+    };
+
+    var initTimer = function () {
+      setInterval(function () {
+        $('#time').text(++timer);
+      }, 1000);
     };
 
     $(function () {
@@ -61,14 +101,34 @@
 
         e.preventDefault();
       });
+
+      initTimer();
     });
   </script>
 </head>
 <body>
-  <h1>Welches Pokemon ist das?</h1>
-  <canvas id="poke-image" height="350" width="350"></canvas>
-  <form id="guess">
-    <input type="text" />
-  </form>
+  <div class="container">
+    <div id="success" class="hide alert alert-success">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <h4>Yay! Geschafft!</h4>
+      <p>
+        Du hast alle 151 Pokemon in <span id="final-time"></span> Sekunden erraten!
+      </p>
+    </div>
+    <div class="row">
+      <div class="span6">
+        <h1>Welches Pokemon ist das?</h1>
+        <form id="guess">
+          <input type="text" autofocus="autofocus" />
+          <button type="submit" class="btn btn-primary">OK</button>
+        </form>
+        <p class="data">
+          Zeit: <span id="time">0</span><br>
+          <span id="missing">151</span> fehlen noch
+        </p>
+      </div>
+      <div class="span4"><canvas id="poke-image" height="350" width="350"></canvas></div>
+    </div>
+  </div>
 </body>
 </html>
