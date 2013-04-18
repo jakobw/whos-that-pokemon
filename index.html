@@ -114,6 +114,12 @@
         e.preventDefault();
       });
 
+      $('#skip').click(function(e) {
+        showPkmn();
+
+        e.preventDefault();
+      });
+
       initTimer();
     });
   </script>
@@ -139,7 +145,10 @@
           <span id="missing">151</span> fehlen noch
         </p>
       </div>
-      <div class="span4"><canvas id="poke-image" height="350" width="350"></canvas></div>
+      <div class="span4">
+        <canvas id="poke-image" height="350" width="350"></canvas>
+        <a id="skip" href="#">&Uuml;berspringen &raquo;</a>
+      </div>
     </div>
     <div class="row" id="poke-slide"></div>
   </div>
