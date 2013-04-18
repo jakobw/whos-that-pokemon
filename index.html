@@ -81,13 +81,13 @@
     };
 
     var showCorrect = function () {
-      $('#poke-slide').prepend('<img src="images/' + (missing[current] - 1) + '.png" />');
+      $('#poke-slide').prepend('<img src="images/' + (missing[current]) + '.png" />');
     };
 
     var checkGuess = function ($input) {
       if ($input.val().toLowerCase() === pokemon[missing[current] - 1]) {
-        removeMissing();
         showCorrect();
+        removeMissing();
         updateCounter();
 
         if (missing.length > 0) {
