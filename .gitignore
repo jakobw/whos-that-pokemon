@@ -1,4 +1,6 @@
-images
-js/bootstrap.js
-css/bootstrap.css
+highscores
+public/images
+public/js/bootstrap.js
+public/css/bootstrap.css
+public/scores.json
 get_images.rb

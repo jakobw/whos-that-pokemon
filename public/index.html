@@ -8,7 +8,7 @@
       height: 350px;
       width: 350px;
     }
-    #guess input {
+    #guess input, #submit-score input {
       margin-bottom: 0;
     }
     #time, #missing {
@@ -105,6 +105,16 @@
       }, 1000);
     };
 
+    var showScores = function () {
+      $.getJSON('scores.json', function (scores) {
+        $.each(scores.sort(function (a, b) {
+          return a.Value - b.Value;
+        }), function(_, score) {
+          $('#scores').append('<li>' + score.Value + ': ' + score.Name + '</li>');
+        });
+      });
+    };
+
     $(function () {
       showPkmn();
 
@@ -120,7 +130,15 @@
         e.preventDefault();
       });
 
+      $('#submit-score').submit(function(e) {
+        $.post('score', { name: $('#name').val(), score: timer });
+        $('#success').hide();
+
+        e.preventDefault();
+      });
+
       initTimer();
+      showScores();
     });
   </script>
 </head>
@@ -131,6 +149,10 @@
       <h4>Yay! Geschafft!</h4>
       <p>
         Du hast alle 151 Pokemon in <span id="final-time"></span> Sekunden erraten!
+        <form id="submit-score">
+          <input type="text" id="name" placeholder="Dein Name" />
+          <button type="submit" class="btn btn-success">Score abschicken</button>
+        </form>
       </p>
     </div>
     <div class="row">
@@ -151,6 +173,9 @@
       </div>
     </div>
     <div class="row" id="poke-slide"></div>
+
+    <h2>Highscores</h2>
+    <ol id="scores"></ol>
   </div>
 </body>
 </html>
