@@ -31,115 +31,136 @@
   <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <script type="text/javascript">
-    var pokemon = ['bisasam', 'bisaknosp', 'bisaflor', 'glumanda', 'glutexo', 'glurak', 'schiggy', 'schillok', 'turtok', 'raupy', 'safcon', 'smettbo', 'hornliu', 'kokuna', 'bibor', 'taubsi', 'tauboga', 'tauboss', 'rattfratz', 'rattikarl', 'habitak', 'ibitak', 'rettan', 'arbok', 'pikachu', 'raichu', 'sandan', 'sandamer', 'nidoran w', 'nidorina', 'nidoqueen', 'nidoran m', 'nidorino', 'nidoking', 'piepi', 'pixi', 'vulpix', 'vulnona', 'pummeluff', 'knuddeluff', 'zubat', 'golbat', 'myrapla', 'duflor', 'giflor', 'paras', 'parasek', 'bluzuk', 'omot', 'digda', 'digdri', 'mauzi', 'snobilikat', 'enton', 'entoron', 'menki', 'rasaff', 'fukano', 'arkani', 'quapsel', 'quaputzi', 'quappo', 'abra', 'kadabra', 'simsala', 'machollo', 'maschock', 'machomei', 'knofensa', 'ultrigaria', 'sarzenia', 'tentacha', 'tentoxa', 'kleinstein', 'georok', 'geowaz', 'ponita', 'gallopa', 'flegmon', 'lahmus', 'magnetilo', 'magneton', 'porenta', 'dodu', 'dodri', 'jurob', 'jugong', 'sleima', 'sleimok', 'muschas', 'austos', 'nebulak', 'alpollo', 'gengar', 'onix', 'traumato', 'hypno', 'krabby', 'kingler', 'voltobal', 'lektrobal', 'owei', 'kokowei', 'tragosso', 'knogga', 'kicklee', 'nockchan', 'schlurp', 'smogon', 'smogmog', 'rihorn', 'rizeros', 'chaneira', 'tangela', 'kangama', 'seeper', 'seemon', 'goldini', 'golking', 'sterndu', 'starmie', 'pantimos', 'sichlor', 'rossana', 'elektek', 'magmar', 'pinsir', 'tauros', 'karpador', 'garados', 'lapras', 'ditto', 'evoli', 'aquana', 'blitza', 'flamara', 'porygon', 'amonitas', 'amoroso', 'kabuto', 'kabutops', 'aerodactyl', 'relaxo', 'arktos', 'zapdos', 'lavados', 'dratini', 'dragonir', 'dragoran', 'mewtu', 'mew'],
-      missing = [],
-      current = -1,
-      timer = 0;
+    (function () {
+      var pokemon = ['bisasam', 'bisaknosp', 'bisaflor', 'glumanda', 'glutexo', 'glurak', 'schiggy', 'schillok', 'turtok', 'raupy', 'safcon', 'smettbo', 'hornliu', 'kokuna', 'bibor', 'taubsi', 'tauboga', 'tauboss', 'rattfratz', 'rattikarl', 'habitak', 'ibitak', 'rettan', 'arbok', 'pikachu', 'raichu', 'sandan', 'sandamer', 'nidoran w', 'nidorina', 'nidoqueen', 'nidoran m', 'nidorino', 'nidoking', 'piepi', 'pixi', 'vulpix', 'vulnona', 'pummeluff', 'knuddeluff', 'zubat', 'golbat', 'myrapla', 'duflor', 'giflor', 'paras', 'parasek', 'bluzuk', 'omot', 'digda', 'digdri', 'mauzi', 'snobilikat', 'enton', 'entoron', 'menki', 'rasaff', 'fukano', 'arkani', 'quapsel', 'quaputzi', 'quappo', 'abra', 'kadabra', 'simsala', 'machollo', 'maschock', 'machomei', 'knofensa', 'ultrigaria', 'sarzenia', 'tentacha', 'tentoxa', 'kleinstein', 'georok', 'geowaz', 'ponita', 'gallopa', 'flegmon', 'lahmus', 'magnetilo', 'magneton', 'porenta', 'dodu', 'dodri', 'jurob', 'jugong', 'sleima', 'sleimok', 'muschas', 'austos', 'nebulak', 'alpollo', 'gengar', 'onix', 'traumato', 'hypno', 'krabby', 'kingler', 'voltobal', 'lektrobal', 'owei', 'kokowei', 'tragosso', 'knogga', 'kicklee', 'nockchan', 'schlurp', 'smogon', 'smogmog', 'rihorn', 'rizeros', 'chaneira', 'tangela', 'kangama', 'seeper', 'seemon', 'goldini', 'golking', 'sterndu', 'starmie', 'pantimos', 'sichlor', 'rossana', 'elektek', 'magmar', 'pinsir', 'tauros', 'karpador', 'garados', 'lapras', 'ditto', 'evoli', 'aquana', 'blitza', 'flamara', 'porygon', 'amonitas', 'amoroso', 'kabuto', 'kabutops', 'aerodactyl', 'relaxo', 'arktos', 'zapdos', 'lavados', 'dratini', 'dragonir', 'dragoran', 'mewtu', 'mew', 'endivie', 'lorblatt', 'meganie', 'feurigel', 'igelavar', 'tornupto', 'karnimani', 'tyracroc', 'impergator', 'wiesor', 'wiesenior', 'hoothoot', 'noctuh', 'ledyba', 'ledian', 'webarak', 'ariados', 'iksbat', 'lampi', 'lanturn', 'pichu', 'pii', 'fluffeluff', 'togepi', 'togetic', 'natu', 'xatu', 'voltilamm', 'waaty', 'ampharos', 'blubella', 'marill', 'azumarill', 'mogelbaum', 'quaxo', 'hoppspross', 'hubelupf', 'papungha', 'griffel', 'sonnkern', 'sonnflora', 'yanma', 'felino', 'morlord', 'psiana', 'nachtara', 'kramurx', 'laschoking', 'traunfugil', 'icognito', 'woingenau', 'girafarig', 'tannza', 'forstellka', 'dummisel', 'skorgla', 'stahlos', 'snubbull', 'granbull', 'baldorfish', 'scherox', 'pottrott', 'skaraborn', 'sniebel', 'teddiursa', 'ursaring', 'schneckmag', 'magcargo', 'quiekel', 'keifel', 'corasonn', 'remoraid', 'octillery', 'botogel', 'mantax', 'panzaeron', 'hunduster', 'hundemon', 'seedraking', 'phanpy', 'donphan', 'porygon2', 'damhirplex', 'farbeagle', 'rabauz', 'kapoera', 'kussilla', 'elekid', 'magby', 'miltank', 'heiteira', 'raikou', 'entei', 'suicune', 'larvitar', 'pupitar', 'despotar', 'lugia', 'ho-oh', 'celebi'],
+        current = -1,
+        timerID = -1;
 
-    for (var i = 1; i <= 151; i++) missing.push(i);
+      var initGame = function (number) {
+        missing = [];
+        for (var i = 1; i <= number; i++) missing.push(i);
+        showPkmn();
+        initTimer();
+      };
 
-    var showPkmn = function () {
-      current = Math.floor(Math.random() * missing.length);
-      loadPkmn(current);
-    };
+      var showPkmn = function () {
+        current = Math.floor(Math.random() * missing.length);
+        loadPkmn(current);
+      };
 
-    var loadPkmn = function (nr) {
-      var img = new Image(),
-          canvas = document.getElementById('poke-image').getContext('2d');
+      var loadPkmn = function (nr) {
+        var img = new Image(),
+            canvas = document.getElementById('poke-image').getContext('2d');
 
-      canvas.clearRect(0, 0, 350, 350);
+        canvas.clearRect(0, 0, 350, 350);
 
-      img.onload = function () {
-        canvas.drawImage(img, 0, 0);
-        var imageData = canvas.getImageData(0, 0, img.width, img.height);
+        img.onload = function () {
+          canvas.drawImage(img, 0, 0);
+          var imageData = canvas.getImageData(0, 0, img.width, img.height);
 
-        for (var i = 0; i < imageData.data.length; i += 4) {
-          if (imageData.data[i+3] > 100) {
-            imageData.data[i] = 10;
-            imageData.data[i+1] = 10;
-            imageData.data[i+2] = 10;
-            imageData.data[i+3] = 255;
+          for (var i = 0; i < imageData.data.length; i += 4) {
+            if (imageData.data[i+3] > 100) {
+              imageData.data[i] = 10;
+              imageData.data[i+1] = 10;
+              imageData.data[i+2] = 10;
+              imageData.data[i+3] = 255;
+            }
+          }
+          canvas.putImageData(imageData, 0, 0);
+        };
+        img.src = 'images/' + missing[nr] + '.png';
+      };
+
+      var removeMissing = function () {
+        missing.splice(current, 1);
+      };
+
+      var success = function () {
+        stopTimer();
+        $('#success').show('fast');
+        $('#final-time').text(timer);
+      }
+
+      var updateCounter = function () {
+        $('#missing').text(missing.length)
+      };
+
+      var showCorrect = function () {
+        $('#poke-slide').prepend('<img src="images/' + (missing[current]) + '.png" />');
+      };
+
+      var checkGuess = function ($input) {
+        if ($input.val().toLowerCase() === pokemon[missing[current] - 1]) {
+          showCorrect();
+          removeMissing();
+          updateCounter();
+
+          if (missing.length > 0) {
+            showPkmn();
+          } else {
+            success();
           }
         }
-        canvas.putImageData(imageData, 0, 0);
+        $input.val('');
       };
-      img.src = 'images/' + missing[nr] + '.png';
-    };
 
-    var removeMissing = function () {
-      missing.splice(current, 1);
-    };
+      var initTimer = function () {
+        timer = 0;
 
-    var success = function () {
-      clearInterval(1);
-      $('#success').show('fast');
-      $('#final-time').text(timer);
-    }
+        if (timerID !== -1) stopTimer();
+        timerID = setInterval(function () {
+          $('#time').text(++timer);
+        }, 1000);
+      };
 
-    var updateCounter = function () {
-      $('#missing').text(missing.length)
-    };
-
-    var showCorrect = function () {
-      $('#poke-slide').prepend('<img src="images/' + (missing[current]) + '.png" />');
-    };
-
-    var checkGuess = function ($input) {
-      if ($input.val().toLowerCase() === pokemon[missing[current] - 1]) {
-        showCorrect();
-        removeMissing();
-        updateCounter();
-
-        if (missing.length > 0) {
-          showPkmn();
-        } else {
-          success();
-        }
-      }
-      $input.val('');
-    };
-
-    var initTimer = function () {
-      setInterval(function () {
-        $('#time').text(++timer);
-      }, 1000);
-    };
-
-    var showScores = function () {
-      $.getJSON('scores.json', function (scores) {
-        $.each(scores.sort(function (a, b) {
-          return a.Value - b.Value;
-        }), function(_, score) {
-          $('#scores').append('<li>' + score.Value + ': ' + score.Name + '</li>');
+      var showScores = function () {
+        $.getJSON('scores.json', function (scores) {
+          $.each(scores.sort(function (a, b) {
+            return a.Value - b.Value;
+          }), function(_, score) {
+            $('#scores').append('<li>' + score.Value + ': ' + score.Name + '</li>');
+          });
         });
+      };
+
+      var stopTimer = function () {
+        window.clearInterval(timerID);
+      };
+
+      $(function () {
+        initGame(151);
+
+        $('#guess').submit(function(e) {
+          checkGuess($(this).find('input'));
+
+          e.preventDefault();
+        });
+
+        $('#skip').click(function(e) {
+          showPkmn();
+
+          e.preventDefault();
+        });
+
+        $('#submit-score').submit(function(e) {
+          $.post('score', { name: $('#name').val(), score: timer });
+          $('#success').hide();
+
+          e.preventDefault();
+        });
+
+        $('.number').click(function(e) {
+          var num = $(this).data('number');
+
+          $('.number').removeClass('btn-primary');
+          $(this).addClass('btn-primary');
+          initGame(num);
+          $('#missing').text(num);
+        });
+
+        showScores();
       });
-    };
-
-    $(function () {
-      showPkmn();
-
-      $('#guess').submit(function(e) {
-        checkGuess($(this).find('input'));
-
-        e.preventDefault();
-      });
-
-      $('#skip').click(function(e) {
-        showPkmn();
-
-        e.preventDefault();
-      });
-
-      $('#submit-score').submit(function(e) {
-        $.post('score', { name: $('#name').val(), score: timer });
-        $('#success').hide();
-
-        e.preventDefault();
-      });
-
-      initTimer();
-      showScores();
-    });
+    })();
   </script>
 </head>
 <body>
@@ -173,9 +194,19 @@
       </div>
     </div>
     <div class="row" id="poke-slide"></div>
-
-    <h2>Highscores</h2>
-    <ol id="scores"></ol>
+    <div class="row">
+      <div class="span6">
+        <h2>Highscores</h2>
+        <ol id="scores"></ol>
+      </div>
+      <div class="span4">
+        <h2>Anzahl</h2>
+        <div class="btn-group">
+          <button class="btn btn-primary number" data-number="151">151 (reset)</button>
+          <button class="btn number" data-number="251">251 (reset)</button>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>
