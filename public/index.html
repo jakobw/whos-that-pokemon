@@ -34,7 +34,8 @@
     (function () {
       var pokemon = ['bisasam', 'bisaknosp', 'bisaflor', 'glumanda', 'glutexo', 'glurak', 'schiggy', 'schillok', 'turtok', 'raupy', 'safcon', 'smettbo', 'hornliu', 'kokuna', 'bibor', 'taubsi', 'tauboga', 'tauboss', 'rattfratz', 'rattikarl', 'habitak', 'ibitak', 'rettan', 'arbok', 'pikachu', 'raichu', 'sandan', 'sandamer', 'nidoran w', 'nidorina', 'nidoqueen', 'nidoran m', 'nidorino', 'nidoking', 'piepi', 'pixi', 'vulpix', 'vulnona', 'pummeluff', 'knuddeluff', 'zubat', 'golbat', 'myrapla', 'duflor', 'giflor', 'paras', 'parasek', 'bluzuk', 'omot', 'digda', 'digdri', 'mauzi', 'snobilikat', 'enton', 'entoron', 'menki', 'rasaff', 'fukano', 'arkani', 'quapsel', 'quaputzi', 'quappo', 'abra', 'kadabra', 'simsala', 'machollo', 'maschock', 'machomei', 'knofensa', 'ultrigaria', 'sarzenia', 'tentacha', 'tentoxa', 'kleinstein', 'georok', 'geowaz', 'ponita', 'gallopa', 'flegmon', 'lahmus', 'magnetilo', 'magneton', 'porenta', 'dodu', 'dodri', 'jurob', 'jugong', 'sleima', 'sleimok', 'muschas', 'austos', 'nebulak', 'alpollo', 'gengar', 'onix', 'traumato', 'hypno', 'krabby', 'kingler', 'voltobal', 'lektrobal', 'owei', 'kokowei', 'tragosso', 'knogga', 'kicklee', 'nockchan', 'schlurp', 'smogon', 'smogmog', 'rihorn', 'rizeros', 'chaneira', 'tangela', 'kangama', 'seeper', 'seemon', 'goldini', 'golking', 'sterndu', 'starmie', 'pantimos', 'sichlor', 'rossana', 'elektek', 'magmar', 'pinsir', 'tauros', 'karpador', 'garados', 'lapras', 'ditto', 'evoli', 'aquana', 'blitza', 'flamara', 'porygon', 'amonitas', 'amoroso', 'kabuto', 'kabutops', 'aerodactyl', 'relaxo', 'arktos', 'zapdos', 'lavados', 'dratini', 'dragonir', 'dragoran', 'mewtu', 'mew', 'endivie', 'lorblatt', 'meganie', 'feurigel', 'igelavar', 'tornupto', 'karnimani', 'tyracroc', 'impergator', 'wiesor', 'wiesenior', 'hoothoot', 'noctuh', 'ledyba', 'ledian', 'webarak', 'ariados', 'iksbat', 'lampi', 'lanturn', 'pichu', 'pii', 'fluffeluff', 'togepi', 'togetic', 'natu', 'xatu', 'voltilamm', 'waaty', 'ampharos', 'blubella', 'marill', 'azumarill', 'mogelbaum', 'quaxo', 'hoppspross', 'hubelupf', 'papungha', 'griffel', 'sonnkern', 'sonnflora', 'yanma', 'felino', 'morlord', 'psiana', 'nachtara', 'kramurx', 'laschoking', 'traunfugil', 'icognito', 'woingenau', 'girafarig', 'tannza', 'forstellka', 'dummisel', 'skorgla', 'stahlos', 'snubbull', 'granbull', 'baldorfish', 'scherox', 'pottrott', 'skaraborn', 'sniebel', 'teddiursa', 'ursaring', 'schneckmag', 'magcargo', 'quiekel', 'keifel', 'corasonn', 'remoraid', 'octillery', 'botogel', 'mantax', 'panzaeron', 'hunduster', 'hundemon', 'seedraking', 'phanpy', 'donphan', 'porygon2', 'damhirplex', 'farbeagle', 'rabauz', 'kapoera', 'kussilla', 'elekid', 'magby', 'miltank', 'heiteira', 'raikou', 'entei', 'suicune', 'larvitar', 'pupitar', 'despotar', 'lugia', 'ho-oh', 'celebi'],
         current = -1,
-        timerID = -1;
+        timerID = -1,
+        missing;
 
       var initGame = function (number) {
         missing = [];
@@ -79,6 +80,7 @@
         stopTimer();
         $('#success').show('fast');
         $('#final-time').text(timer);
+        $('#guessed').text($('.number.btn-primary').data('number') - missing.length);
       }
 
       var updateCounter = function () {
@@ -116,11 +118,26 @@
       var showScores = function () {
         $.getJSON('scores.json', function (scores) {
           $.each(scores.sort(function (a, b) {
-            return a.Value - b.Value;
+            if (a.Missing === b.Missing) return a.Value - b.Value;
+            else return a.Missing - b.Missing;
           }), function(_, score) {
-            $('#scores').append('<li>' + score.Value + ': ' + score.Name + '</li>');
+            $('#scores').append('<li>' + score.Value + ': ' + score.Name + ' (' + (score.Guessed || 0) + ' erraten; ' + (score.Missing || 0) + ' fehlen)</li>');
           });
         });
+      };
+
+      var giveUp = function () {
+        success();
+      };
+
+      var submitScore = function () {
+        $.post('score', {
+          name: $('#name').val(),
+          score: timer,
+          missing: missing.length,
+          guessed: $('.number.btn-primary').data('number') - missing.length
+        });
+        $('#success').hide();
       };
 
       var stopTimer = function () {
@@ -143,8 +160,7 @@
         });
 
         $('#submit-score').submit(function(e) {
-          $.post('score', { name: $('#name').val(), score: timer });
-          $('#success').hide();
+          submitScore();
 
           e.preventDefault();
         });
@@ -158,6 +174,10 @@
           $('#missing').text(num);
         });
 
+        $('#give-up').click(function(e) {
+          giveUp();
+        });
+
         showScores();
       });
     })();
@@ -169,7 +189,7 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <h4>Yay! Geschafft!</h4>
       <p>
-        Du hast alle 151 Pokemon in <span id="final-time"></span> Sekunden erraten!
+        Du hast <span id="guessed"></span> Pokemon in <span id="final-time"></span> Sekunden erraten!
         <form id="submit-score">
           <input type="text" id="name" placeholder="Dein Name" />
           <button type="submit" class="btn btn-success">Score abschicken</button>
@@ -182,6 +202,7 @@
         <form id="guess">
           <input type="text" autofocus="autofocus" />
           <button type="submit" class="btn btn-primary">OK</button>
+          <button class="btn btn-danger" id="give-up">Aufgeben</button>
         </form>
         <p class="data">
           Zeit: <span id="time">0</span><br>

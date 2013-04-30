@@ -10,6 +10,8 @@ import (
 type Score struct {
   Name string
   Value string
+  Missing string
+  Guessed string
 }
 
 func main() {
@@ -41,6 +43,8 @@ func submitScoreHandler(w http.ResponseWriter, r *http.Request) {
     score := Score{
       Name: r.FormValue("name"),
       Value: r.FormValue("score"),
+      Missing: r.FormValue("missing"),
+      Guessed: r.FormValue("guessed"),
     }
     writeScores(append(readScores(), score))
   } else {
