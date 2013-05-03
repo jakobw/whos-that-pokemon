@@ -116,12 +116,25 @@
       };
 
       var showScores = function () {
+        var $scores = $('#scores');
+
+        $scores.html(
+          '<tr><th>#</th><th>Name</th><th>Zeit</th><th>erraten</th><th>fehlende</th></tr>'
+        );
         $.getJSON('scores.json', function (scores) {
           $.each(scores.sort(function (a, b) {
             if (a.Missing === b.Missing) return a.Value - b.Value;
             else return a.Missing - b.Missing;
-          }), function(_, score) {
-            $('#scores').append('<li>' + score.Value + ': ' + score.Name + ' (' + (score.Guessed || 0) + ' erraten; ' + (score.Missing || 0) + ' fehlen)</li>');
+          }), function(i, score) {
+            $scores.append(
+              '<tr>'
+              + '<td>' + (i + 1) + '</td>'
+              + '<td>' + score.Name + '</td>'
+              + '<td>' + score.Value + '</td>'
+              + '<td>' + (score.Guessed || 0) + '</td>'
+              + '<td>' + (score.Missing || 0) + '</td>'
+              + '</tr>'
+            );
           });
         });
       };
@@ -136,6 +149,8 @@
           score: timer,
           missing: missing.length,
           guessed: $('.number.btn-primary').data('number') - missing.length
+        }, function () {
+          showScores();
         });
         $('#success').hide();
       };
@@ -218,7 +233,7 @@
     <div class="row">
       <div class="span6">
         <h2>Highscores</h2>
-        <ol id="scores"></ol>
+        <table class="table table-striped" id="scores"></table>
       </div>
       <div class="span4">
         <h2>Anzahl</h2>
