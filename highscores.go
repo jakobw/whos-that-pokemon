@@ -5,13 +5,12 @@ import (
   "net/http"
   "io/ioutil"
   "encoding/json"
+  "strconv"
 )
 
 type Score struct {
   Name string
-  Value string
-  Missing string
-  Guessed string
+  Value, Missing, Guessed int
 }
 
 func main() {
@@ -40,12 +39,12 @@ func writeScores(scores []Score) {
 
 func submitScoreHandler(w http.ResponseWriter, r *http.Request) {
   if r.Method == "POST" {
-    score := Score{
-      Name: r.FormValue("name"),
-      Value: r.FormValue("score"),
-      Missing: r.FormValue("missing"),
-      Guessed: r.FormValue("guessed"),
-    }
+    var score Score
+    score.Name = r.FormValue("name")
+    score.Value, _ = strconv.Atoi(r.FormValue("score"))
+    score.Missing, _ = strconv.Atoi(r.FormValue("missing"))
+    score.Guessed, _ = strconv.Atoi(r.FormValue("guessed"))
+
     writeScores(append(readScores(), score))
   } else {
     fmt.Fprint(w, "")
